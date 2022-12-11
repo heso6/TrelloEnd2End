@@ -1,5 +1,7 @@
 import org.testng.annotations.Test;
 
+import static io.restassured.RestAssured.*;
+
 public class TrelloE2eTests extends TestBase {
     private static String boardId;
     private static String todoId;
@@ -9,7 +11,14 @@ public class TrelloE2eTests extends TestBase {
 
     @Test(priority = 1)
     public void shouldCreateBoardWithoutDefaultLists() {
-
+        given()
+                .spec(reqSpecification)
+                .queryParam("name", "This is my board")
+                .queryParam("defaultLists", "false")
+                .when()
+                .post(baseUrl + boards)
+                .then()
+                .statusCode(200);
     }
 
     @Test(priority = 2)
@@ -30,7 +39,7 @@ public class TrelloE2eTests extends TestBase {
 
 
     @Test(priority = 5)
-    public void shouldAddCommentToCar() {
+    public void shouldAddCommentToCard() {
 
     }
 
