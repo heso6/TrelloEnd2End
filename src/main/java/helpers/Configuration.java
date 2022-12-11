@@ -25,4 +25,5 @@ public class Configuration {
         }
         return properties.getProperty(propertyName);
     }
+
 }
