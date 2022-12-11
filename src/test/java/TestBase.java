@@ -4,8 +4,15 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
+
+import java.util.List;
+
+import static io.restassured.RestAssured.*;
 
 public class TestBase {
 
@@ -27,4 +34,31 @@ public class TestBase {
         reqBuilder.setContentType(ContentType.JSON);
         reqSpecification = reqBuilder.build();
     }
+
+    @AfterSuite
+    public void testsCleaup() {
+        Response response =
+                given()
+                        .spec(reqSpecification)
+                        .when()
+                        .pathParam("id", "testuser05695085")
+                        .get(baseUrl + "/organizations/{id}/boards")
+                        .then()
+                        .statusCode(200)
+                        .extract().response();
+
+        JsonPath jsonPath = response.jsonPath();
+        List<String> allBoardIds = jsonPath.getList("id");
+
+        for (String id : allBoardIds) {
+            given()
+                    .spec(reqSpecification)
+                    .pathParam("id", id)
+                    .when()
+                    .delete(baseUrl + boards + "/{id}")
+                    .then()
+                    .statusCode(200);
+        }
+    }
+
 }
