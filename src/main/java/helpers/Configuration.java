@@ -9,7 +9,6 @@ public class Configuration {
     public static String getBaseUrl() {
         return getProperty("baseUrl");
     }
-
     public static String getKey() {
         return getProperty("key");
     }
@@ -17,8 +16,6 @@ public class Configuration {
     public static String getToken() {
         return getProperty("token");
     }
-
-
     private static String getProperty(String propertyName) {
         Properties properties = new Properties();
         try {

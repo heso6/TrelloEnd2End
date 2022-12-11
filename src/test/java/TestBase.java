@@ -15,7 +15,6 @@ public class TestBase {
     public String cards = "/cards";
     public String actions = "/actions";
 
-
     public RequestSpecBuilder reqBuilder;
     public RequestSpecification reqSpecification;
 
